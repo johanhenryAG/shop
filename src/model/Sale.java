@@ -13,6 +13,11 @@ public class Sale {
 		this.products = products;
 		this.amount = amount;
 	}
+        public Sale (String client, double amount){
+            super();
+		this.client = client;
+		this.amount = amount;
+        }
 
 	public String getClient() {
 		return client;
@@ -38,9 +43,17 @@ public class Sale {
 		this.amount = amount;
 	}
 
-	@Override
-	public String toString() {
-		return "Sale [client=" + client + ", products=" + Arrays.toString(products) + ", amount=" + amount + "]";
-	}
+    @Override
+    public String toString() {
+        String productosVendidos ="";
+        for (Product p : products) {
+            if (p != null) { 
+                productosVendidos += p.getName() + " ";
+            }
+        }
+        return "Sale{" + "client=" + client + ", products=" + productosVendidos.trim() + ", amount=" + amount + '}';
+    }
+
+	
 
 }

@@ -15,6 +15,7 @@ public class Shop {
 
     public Shop() {
         inventory = new Product[10];
+        sales = new Sale[10];
     }
 
     public static void main(String[] args) {
@@ -38,6 +39,7 @@ public class Shop {
             System.out.println("5) Ver inventario");
             System.out.println("6) Venta");
             System.out.println("7) Ver ventas");
+            System.out.println("8) Monto total de todas las ventas");
             System.out.println("10) Salir programa");
             System.out.print("Seleccione una opcion: ");
             opcion = scanner.nextInt();
@@ -70,8 +72,11 @@ public class Shop {
                 case 7:
                     shop.showSales();
                     break;
-
                 case 8:
+                    shop.showTotalSalesAmount();
+                    break;
+
+                case 10:
                     exit = true;
                     break;
             }
@@ -92,7 +97,7 @@ public class Shop {
      * show current total cash
      */
     private void showCash() {
-        System.out.println("Dinero actual: ");
+        System.out.println("Dinero actual: " + cash);
     }
 
     /**
@@ -103,14 +108,21 @@ public class Shop {
             System.out.println("No se pueden a\u00f1adir mas productos");
             return;
         }
+        
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nombre: ");
-        String name = scanner.nextLine();
+        String name = scanner.nextLine(); 
+        
+        Product product = findProduct(name);
+        if (product != null) {
+            System.out.println("El producto ya existe en el sistema");
+            return;
+        } 
         System.out.print("Precio mayorista: ");
         double wholesalerPrice = scanner.nextDouble();
         System.out.print("Stock: ");
         int stock = scanner.nextInt();
-
+        
         addProduct(new Product(name, wholesalerPrice, true, stock));
     }
 
@@ -128,7 +140,7 @@ public class Shop {
             System.out.print("Seleccione la cantidad a a\u00f1adir: ");
             int stock = scanner.nextInt();
             // update stock product
-            product.setStock(stock);
+            product.setStock(product.getStock() + stock);
             System.out.println("El stock del producto " + name + " ha sido actualizado a " + product.getStock());
 
         } else {
@@ -145,12 +157,19 @@ public class Shop {
         String name = scanner.next();
 
         Product product = findProduct(name);
+        
+        double porcentaje = 40.0;
 
         if (product != null) {
-            System.out.println("El stock del producto " + name + " ha sido actualizado a " + product.getPublicPrice());
-
+            double precioFinal = product.getPublicPrice() * (porcentaje/100);
+            System.out.println("El stock del producto " + name + " ha sido actualizado a " + precioFinal);
+            product.setPublicPrice(precioFinal);
+        }else {
+            System.out.println("Producto no encontrado");
         }
     }
+    
+    
 
     /**
      * show all inventory
@@ -176,6 +195,10 @@ public class Shop {
         // sale product until input name is not 0
         double totalAmount = 0.0;
         String name = "";
+        
+        Product[] shoppingcart = new Product[10];
+        int index = 0;
+        
         while (!name.equals("0")) {
             System.out.println("Introduce el nombre del producto, escribir 0 para terminar:");
             name = sc.nextLine();
@@ -194,6 +217,7 @@ public class Shop {
                 if (product.getStock() == 0) {
                     product.setAvailable(false);
                 }
+                shoppingcart[index++] = product;
                 System.out.println("Producto a\u00f1adido con éxito");
             }
 
@@ -206,7 +230,19 @@ public class Shop {
         totalAmount = totalAmount * TAX_RATE;
         cash += totalAmount;
         System.out.println("Venta realizada con exito, total: " + totalAmount);
+        
+        Sale newSale = new Sale(client, shoppingcart, totalAmount);
+
+        for (int i = 0; i < sales.length; i++) {
+            if (sales[i] == null) {
+                sales[i] = newSale;
+                break;
     }
+}
+
+    }
+    
+    
 
     /**
      * show all sales
@@ -219,7 +255,20 @@ public class Shop {
             }
         }
     }
+    
+    public void showTotalSalesAmount() {
+        double total = 0.0;
+        for (Sale sale : sales) {
+            if (sale != null) {
+                total += sale.getAmount();
+            }
+        }
 
+    System.out.println("Monto total de todas las ventas: " + total);
+
+        
+    }
+    
     /**
      * add a product to inventory
      *
@@ -255,7 +304,7 @@ public class Shop {
      */
     public Product findProduct(String name) {
         for (int i = 0; i < inventory.length; i++) {
-            if (inventory[i] != null && inventory[i].getName().equals(name)) {
+            if (inventory[i] != null && inventory[i].getName().equalsIgnoreCase(name)) {
                 return inventory[i];
             }
         }
