@@ -1,51 +1,53 @@
 package model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Sale {
-	String client;
-	Product[] products;
-	double amount;
-
-	public Sale(String client, Product[] products, double amount) {
-		super();
-		this.client = client;
-		this.products = products;
-		this.amount = amount;
-	}
-        public Sale (String client, double amount){
-            super();
-		this.client = client;
-		this.amount = amount;
-        }
-
-	public String getClient() {
-		return client;
-	}
-
-	public void setClient(String client) {
-		this.client = client;
-	}
-
-	public Product[] getProducts() {
-		return products;
-	}
-
-	public void setProducts(Product[] products) {
-		this.products = products;
-	}
-
-	public double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-
+    private String client;
+    private ArrayList<Product> products;
+    private Amount amount;
+    
+    public Sale(String client, ArrayList<Product> products, Amount amount) {
+        super();
+        this.client = client;
+        this.products = products;
+        this.amount = amount;
+    }
+    
+    public Sale(String client, Amount amount) {
+        super();
+        this.client = client;
+        this.products = new ArrayList<>();
+        this.amount = amount;
+    }
+    
+    public String getClient() {
+        return client;
+    }
+    
+    public void setClient(String client) {
+        this.client = client;
+    }
+    
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+    
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
+    }
+    
+    public Amount getAmount() {
+        return amount;
+    }
+    
+    public void setAmount(Amount amount) {
+        this.amount = amount;
+    }
+    
     @Override
     public String toString() {
-        String productosVendidos ="";
+        String productosVendidos = "";
         for (Product p : products) {
             if (p != null) { 
                 productosVendidos += p.getName() + " ";
@@ -53,7 +55,4 @@ public class Sale {
         }
         return "Sale{" + "client=" + client + ", products=" + productosVendidos.trim() + ", amount=" + amount + '}';
     }
-
-	
-
 }
