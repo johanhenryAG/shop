@@ -10,10 +10,5 @@ import model.Amount;
  * @author johan
  */
 public interface Payable {
-    /**
-     * Realiza un pago restando la cantidad del saldo
-     * @param amount cantidad a pagar
-     * @return true si el pago es exitoso (saldo suficiente), false en caso contrario
-     */
     boolean pay(Amount amount);
 }

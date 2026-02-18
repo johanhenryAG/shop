@@ -9,11 +9,5 @@ package main;
  * @author johan
  */
 public interface Logable {
-    /**
-     * 
-     * @param user número de usuario/empleado
-     * @param password contraseña
-     * @return
-     */
     boolean login(int user, String password);
 }
