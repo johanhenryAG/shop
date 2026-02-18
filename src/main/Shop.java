@@ -248,7 +248,7 @@ public class Shop {
         totalValue *= TAX_RATE;
         Amount totalAmount = new Amount(totalValue);
         cash.setValue(cash.getValue() + totalValue);    
-        System.out.println("Venta realizada con éxito, total: " + totalAmount);
+        System.out.println("Venta realizada con exito, total: " + totalAmount);
         
         if (client.pay(totalAmount)) {
             System.out.println("Pago realizado con éxito. Saldo restante: " + client.getBalance());
